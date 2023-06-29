@@ -1,21 +1,16 @@
 # Fertility Rates
 A Repository Where I Explore the Average Total Fertility Rate by Geographic Region for the Last 50 Years
 
-## Goal
-This case study aimed to answer the following question: What was the Average Total Fertility Rate by Geographic Region from 1960 to 2021? I used data from a [World Bank dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021), which contains country names and their respective average total fertility rates by year. 
+**Goal**: This case study aimed to answer the following question: What was the Average Total Fertility Rate by Geographic Region from 1960 to 2021? I used data from a [World Bank dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021), which contains country names and their respective average total fertility rates by year. 
 
-## Analysis 
-If you'd like to see my analysis using R, feel free to check out two files:
-    1. `fertility_rates.Rmd`, if you'd like to interact with the code; and
-    2. `fertility_rates.pdf`, if you'd like to see the LaTeX output of `fertility_rates.Rmd`; or
-    2. `fertility_rates.R`, if you'd only like to see the code. 
+**Analysis**: If you'd like to see my analysis using R, feel free to check out the three following files:
+- `fertility_rates.Rmd`, if you'd like to interact with the code; and
+- `fertility_rates.pdf`, if you'd like to see the LaTeX output of `fertility_rates.Rmd`; or
+- `fertility_rates.R`, if you'd only like to see the code. 
 
-## Tableau Dashboard
-If you'd like to see an interactive version of my analysis, please check out my Tableau dashboard, where you can find See [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard) :)
+**Tableau Dashboard**: If you'd like to see an interactive version of my analysis, please check out my Tableau dashboard, which you can find [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard)! :)
 
-
-## Spoiler Alert! 
-- **My Conclusion**: Nearly *every* country has experienced a sharp decrease in average total fertility rates. 
+**My Conclusion**: Nearly *every* country has experienced a sharp decrease in average total fertility rates. 
 
 ## Guiding Questions
 Following are some of the questions I used to guide myself as I completed this case study. This guide is broken up into six sections: 
