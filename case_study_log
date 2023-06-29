@@ -1,0 +1,150 @@
+
+
+Dataset: https://data.worldbank.org/indicator/SP.DYN.LE00.IN?view=map&year=2021
+
+
+Question to answer: How do annual members and casual riders use Cyclistic bikes
+differently?
+
+Produce a report with the following deliverables:
+1. A clear statement of the business task
+    - For this business task, we are trying to answer the following question: How do annual members and casual riders use Cyclistic bikes differently?
+2. A description of all data sources used
+    - The data used in this case study consists of 12 different csv files, each of which has 13 columns. The data provides information on a given rider; e.g., whether each rider is a casual rider or an annual member, and when or where their bike trip started or ended (in terms of station name and latitude/longitude).
+3. Documentation of any cleaning or manipulation of data
+4. A summary of your analysis
+5. Supporting visualizations and key findings
+6. Your top three recommendations based on your analysis
+
+
+# Ask
+Guiding questions:
+- What is the problem you are trying to solve? 
+    - We are try to discover how annual members and casual riders use Cyclistic bikes differently
+- How can your insights drive business decisions?
+    - My insights will shed light on what can be done to convert casual riders to annual members
+
+Key tasks:
+- Identify the business task
+- Consider key stakeholders
+
+Deliverable:
+- A clear statement of the business task
+    - For this business task, we are trying to answer the following question: How do annual members and casual riders use Cyclistic bikes differently?
+
+
+# Prepare
+Guiding questions:
+- Where is your data located? 
+    - The data is located on a website (https://divvy-tripdata.s3.amazonaws.com/index.html).
+- How is the data organized? 
+    - They are csv files, each of which has 13 columns.
+- Are there issues with bias or credibility in this data? Does your data ROCCC (reliable, original, comprehensive, current, cited)?
+    - The data seems reliable, original, comprehensive, and current. (It's not cited, but I think that's because it's original)
+- How are you addressing licensing, privacy, security, and accessibility? 
+    - I think this is a public data set...
+- How did you verify the data’s integrity? 
+    - The data looks legitimate, but I am not entirely sure.
+- How does it help you answer your question?
+    - We are try to answer how annual members and casual riders use Cyclistic bikes differently. This data set tells us whether each rider is a casual rider/annual member, and when/where their bike trip started/ended (in terms of station and lat/long). 
+- Are there any problems with the data?
+    - Some cells are empty
+
+Key tasks:
+1. Download data and store it appropriately.
+2. Identify how it’s organized.
+3. Sort and filter the data.
+4. Determine the credibility of the data.
+
+Deliverable:
+- A description of all data sources used
+    - The data used in this case study consists of 12 different csv files, each of which has 13 columns. The data provides information on a given rider; e.g., whether each rider is a casual rider or an annual member, and when or where their bike trip started or ended (in terms of station name and latitude/longitude).
+
+# Process
+Guiding questions:
+- What tools are you choosing and why?
+    - This data is structured and has hundreds of thousands of rows. I'll use either R or SQL  
+- Have you ensured your data’s integrity?
+    - Yes, this data ROCCC's
+- What steps have you taken to ensure that your data is clean?
+    -  I have looked over the values in the table
+- How can you verify that your data is clean and ready to analyze?
+    - When the data ROCCC's and is orderly    
+- Have you documented your cleaning process so you can review and share those results?
+    - No
+
+Key tasks:
+1. Check the data for errors.
+2. Choose your tools.
+3. Transform the data so you can work with it effectively.
+4. Document the cleaning process.
+
+Deliverable:
+- Documentation of any cleaning or manipulation of data
+
+# Analyze
+Guiding questions:
+- How should you organize your data to perform analysis on it?
+    - The data needs to aggregated appropriately. This involves checking data types, making sure values are not missing/incorrect,
+    ensuring that the different tables to be aggregated have the same column names, etc.
+- Has your data been properly formatted?
+    - Yes
+- What surprises did you discover in the data?
+    - That casual riders take significantly less rides than annual members.
+- What trends or relationships did you find in the data?
+    - Throughout the week, it seems the number of rides taken by a casual rider decreases and then increases, whereas the number of rides taken by an annual member decreases and then increases
+- How will these insights help answer your business questions?
+    - These insights will be helpful in answering the business question, which is: How do annual members and casual riders use Cyclistic bikes differently?
+
+Key tasks:
+1. Aggregate your data so it’s useful and accessible.
+2. Organize and format your data.
+3. Perform calculations.
+4. Identify trends and relationships.
+
+Deliverable:
+- A summary of your analysis
+
+
+# Share
+Guiding questions:
+- Were you able to answer the original question?
+    - Yes. The original question was: how do annual members and casual riders use Cyclistic bikes differently?
+- What story does your data tell?
+- How do your findings relate to your original question?
+- Who is your audience? What is the best way to communicate with them?
+- Can data visualization help you share your findings?
+- Is your presentation accessible to your audience?
+
+Key tasks:
+1. Determine the best way to share your findings.
+2. Create effective data visualizations.
+3. Present your findings.
+4. Ensure your work is accessible.
+
+Deliverable:
+- Supporting visualizations and key findings
+
+Follow these steps:
+1. Take out a piece of paper and a pen and sketch some ideas for how you will visualize the data.
+2. Once you choose a visual form, open your tool of choice to create your visualization. Use a presentation software, such as PowerPoint or Google Slides; your spreadsheet program; Tableau; or R.
+3. Create your data visualization, remembering that contrast should be used to draw your audience’s attention to the
+most important insights. Use artistic principles including size, color, and shape.
+4. Ensure clear meaning through the proper use of common elements, such as headlines, subtitles, and labels.
+5. Refine your data visualization by applying deep attention to detail.
+
+
+# Act
+Guiding questions:
+- What is your final conclusion based on your analysis?
+- How could your team and business apply your insights?
+- What next steps would you or your stakeholders take based on your findings?
+- Is there additional data you could use to expand on your findings?
+
+Key tasks:
+1. Create your portfolio.
+2. Add your case study.
+3. Practice presenting your case study to a friend or family member.
+
+Deliverable:
+- Your top three recommendations based on your analysis
