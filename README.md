@@ -1,5 +1,4 @@
 # Fertility Rates
-A Repository Where I Explore the Average Total Fertility Rate by Geographic Region for the Last 50 Years
 
 **Goal**: This case study aimed to answer the following question: What was the Average Total Fertility Rate by Geographic Region from 1960 to 2021? I used data from a [World Bank dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021), which contains country names and their respective average total fertility rates by year. 
 
