@@ -4,12 +4,12 @@
 
 **Data Set**: For this case study, I used a [dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021) from World Bank. It contains countries and their respective average total fertility rates by year. 
 
-**Analysis**: If you'd like to see my analysis using R, feel free to check out the three following files:
+**Analysis**: If you'd like to see my analysis using R, feel free to check out three different files:
 - `fertility_rates.Rmd`, if you'd like to interact with the code; and
 - `fertility_rates.pdf`, if you'd like to see the LaTeX output of `fertility_rates.Rmd`; or
 - `fertility_rates.R`, if you'd only like to see the code. 
 
-**Tableau Dashboard**: If you'd like to see an interactive version of my analysis, please check out my Tableau dashboard, which you can find [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard)! :)
+**Tableau Dashboard**: If you'd like to see an interactive version of my analysis, check out my Tableau dashboard! You can find it [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard)! :)
 
 **Conclusion**: Nearly *every* country has experienced a sharp decrease in average total fertility rates. 
 
