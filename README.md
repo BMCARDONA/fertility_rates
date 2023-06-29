@@ -1,11 +1,24 @@
 # Fertility Rates
 A Repository Where I Explore the Average Total Fertility Rate by Geographic Region for the Last 50 Years
 
-This case study aimed to answer the following question: What was the Average Total Fertility Rate by Geographic Region from 1960 to 2021? I used data from a [World Bank dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021), which contains country names and their respective total fertility rates by year. 
+## Goal
+This case study aimed to answer the following question: What was the Average Total Fertility Rate by Geographic Region from 1960 to 2021? I used data from a [World Bank dataset](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021), which contains country names and their respective average total fertility rates by year. 
 
-By answering this question, I was able to find the general worldwide trend of average total fertility rates. 
+## Analysis 
+If you'd like to see my analysis using R, feel free to check out two files:
+    1. `fertility_rates.Rmd`, if you'd like to interact with the code; and
+    2. `fertility_rates.pdf`, if you'd like to see the LaTeX output of `fertility_rates.Rmd`; or
+    2. `fertility_rates.R`, if you'd only like to see the code. 
 
-Below are some of the questions I used to guide myself as I completed this case study. This guide is broken up into six sections: 
+## Tableau Dashboard
+If you'd like to see an interactive version of my analysis, please check out my Tableau dashboard, where you can find See [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard) :)
+
+
+## Spoiler Alert! 
+- **My Conclusion**: Nearly *every* country has experienced a sharp decrease in average total fertility rates. 
+
+## Guiding Questions
+Following are some of the questions I used to guide myself as I completed this case study. This guide is broken up into six sections: 
   1. [Ask](#Ask)
   2. [Prepare](#Prepare)
   3. [Process](#Process)
@@ -13,14 +26,14 @@ Below are some of the questions I used to guide myself as I completed this case 
   5. [Share](#Share)
   6. [Act](#Act)
 
-# Ask
+### Ask
 Guiding questions:
 - What is the problem you are trying to solve? 
     - For this case study, we are trying to answer the following question: What was the Average Total Fertility Rate by Geographic Region for the last 50 years?
 - How can your insights drive business decisions?
     - My insights will shed light on the general trend of average total fertility rates worldwide.
 
-# Prepare
+### Prepare
 Guiding questions:
 - Where is your data located? 
     - My data is located on the [World Bank](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021) website.
@@ -37,7 +50,7 @@ Guiding questions:
 - Are there any problems with the data?
     - This data set will allow one to see *how* fertility rates are changing, but not *why* they are changing. 
 
-# Process
+### Process
 Guiding questions:
 - What tools are you choosing and why?
     - This data set is not too large, and I enjoy using R, so I plan to use R.
@@ -56,7 +69,7 @@ Guiding questions:
 - Have you documented your cleaning process so you can review and share those results?
     - Yes, the cleaning process is part of my fertility_rates.R file. 
 
-# Analyze
+### Analyze
 Guiding questions:
 - How should you organize your data to perform analysis on it?
     - I am going to do three things:
@@ -73,7 +86,7 @@ Guiding questions:
 - How will these insights help answer your case study questions?
     - These insights indicate that many countries have for the last 50 years been experiencing a non-trivial decrease in fertility rates.
 
-# Share
+### Share
 Guiding questions:
 - Were you able to answer the original question?
     - Yes. The original question was the following: What was the Average Total Fertility Rate by Geographic Region for the last 50 years?
@@ -87,9 +100,9 @@ Guiding questions:
 - Can data visualization help you share your findings?
     - Yes -- visualizations have helped me considerably to share my findings!
 - Is your presentation accessible to your audience?
-    - Yes, the dashboard is on Tableau. See (here)[https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard2]
+    - Yes, the dashboard is on Tableau. See [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard)
 
-# Act
+### Act
 Guiding questions:
 - What is your final conclusion based on your analysis?
     - To re-iterate, nearly *every* country has experienced, is experiencing, or likely will experience a sharp decrease in average total fertility rates. 
