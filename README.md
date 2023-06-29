@@ -14,7 +14,7 @@
 **Conclusion**: Nearly *every* country has experienced a sharp decrease in average total fertility rates. 
 
 ## Guiding Questions
-Following are some of the questions I used to guide myself as I completed this case study. This guide is broken up into six sections: 
+Following are some of the guiding questions I used to complete this case study. These questions are broken up into six sections: 
   1. [Ask](#Ask)
   2. [Prepare](#Prepare)
   3. [Process](#Process)
