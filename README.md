@@ -1,6 +1,6 @@
-# Fertility Rates Case Study
+# Overpopulation Case Study
 
-**Goal**: This case study aims to answer the following question: Which issue is more significant, overpopulation or underpopulation?
+**Goal**: This case study aims to answer the following question: In the coming decades, which issue will be more significant, overpopulation or underpopulation?
 
 **Data Set**: For this case study, I used a [data set](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021) from The World Bank. It contains a list of countries, in addition to their respective total fertility rates from 1960 to 2021. 
 
