@@ -1,0 +1,633 @@
+---
+title: "Total Fertility Rate by Geographic Region (1960-2021)"
+author: "Bradley Cardona"
+date: "2023-06-28"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+geometry: a4paper, margin=1in
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+#### Case Study Outline:
+- Question: What was the Total Fertility Rate by Geographic Region from 1960 to 2021?
+- Data set: [World Bank](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021)
+
+
+#### Abstract: 
+- The Total Fertility Rate (TFR) is a measure of the average number of children that would be born to a woman over her lifetime if she were to experience the exact current age-specific fertility rates through her lifetime and were to live from birth until the end of her reproductive life. It is often said that the world is experiencing or will experieince an overpopulation problem. This analysis suggests, however, that the problem is actually the opposite. Due to the dramatic drop in TFRs across nearly every country for the last several decades, we believe that most countries will experience an underpopulation problem.
+
+## Install required packages
+
+```{r}
+library(tidyverse)  # helps wrangle data
+library(lubridate)  # helps wrangle date attributes
+library(ggplot2)  # helps visualize data
+library(readxl) # helps read data from Excel files 
+library(scales) # helps scale data, format labels, and create color palettes
+library(dplyr) # helps manipulate data frames
+
+getwd() # displays working directory
+
+# set working directory to simplify calls to data
+# setwd("~/Documents/data_analytics/fertility_rate_case_study/") 
+```
+
+## Step 1: Collect data
+
+```{r}
+fertility_rates <- read_xls("fertility_rates.xls")
+head(fertility_rates)
+```
+
+## Step 2: Wrangle data, look for any incongruencies 
+
+```{r}
+colnames(fertility_rates)  # Column names
+nrow(fertility_rates)  # Number of rows
+dim(fertility_rates)  # Dimensionss
+head(fertility_rates)  # First 6 rows of data frame
+str(fertility_rates)  # Columns and respective data types (numeric, character, etc)
+summary(fertility_rates)  # Statistical summary of data. Mainly for numerics
+
+# delete two columns: "Indicator Name" and "Indicator Code"
+fertility_rates <- fertility_rates %>% 
+  select(-c("Indicator Name", "Indicator Code"))
+```
+
+## Step 3: Clean up data and prepare for analysis 
+
+Inspect the new table that has been created
+
+```{r}
+colnames(fertility_rates)  # Column names
+nrow(fertility_rates)  # Number of rows
+dim(fertility_rates)  # Dimensions
+head(fertility_rates)  # First 6 rows of data frame
+str(fertility_rates)  # Columns and respective data types (numeric, character, etc)
+summary(fertility_rates)  # Statistical summary of data. Mainly for numerics
+```
+
+## Step 4: Conduct descriptive analysis
+
+```{r}
+
+# Compare total fertility rates in 1960 vs. total fertility rates in 2021
+aggregate(fertility_rates$"1960" ~ fertility_rates$"2021", FUN = mean)
+# Compare median fertility rates in 1960 vs. median fertility in 2021
+aggregate(fertility_rates$"1960" ~ fertility_rates$"2021", FUN = median)
+# Compare maximum fertility rates in 1960 vs. maximum fertility rates in 2021
+aggregate(fertility_rates$"1960" ~ fertility_rates$"2021", FUN = max)
+# Compare minimum fertility rates in 1960 vs. minimum fertility rates in 2021
+aggregate(fertility_rates$"1960" ~ fertility_rates$"2021", FUN = min)
+
+# Find Total Fertility rate by Country Name in 1960 vs. 2021. 
+# Assign the result to avg_fertility_rate.
+avg_fertility_rate <- aggregate(fertility_rates$"1960" 
+                                ~ fertility_rates$"2021" 
+                                + fertility_rates$"Country Name", 
+                                FUN = mean)
+```
+
+
+## Step 5: Create figures
+
+### Figure 1
+```{r fig.align='center'}
+# Create a scatter plot of the data to find general pattern of fertility rates
+ggplot(avg_fertility_rate, aes(x = `fertility_rates$"2021"`, y = `fertility_rates$"1960"`)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Total Fertility Rate in 2021") +
+  ylab("Total Fertility Rate in 1960") +
+  ggtitle("Figure 1. Total Fertility Rate by Country (1960 vs. 2021)")
+```
+Each data point in Figure 1 represents a different country. These data points suggest that there has been a considerable decrease in total fertility rates from 1960 to 2021. Let's further analyze this trend.
+
+### Figure 2
+```{r fig.align='center'}
+# Find unique country names in fertility_rates table
+country_names <- unique(fertility_rates$`Country Name`)
+sorted_country_names <- sort(country_names)
+sorted_country_names
+```
+
+```{r}
+# Filter the dataset to include only European countries
+european_countries <- c("Albania", "Andorra", "Austria", "Belarus", "Belgium", 
+                        "Bosnia and Herzegovina", "Bulgaria", "Channel Islands", 
+                        "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", 
+                        "Faroe Islands", "Finland", "France", "Germany", 
+                        "Gibraltar", "Greece", "Hungary", "Iceland", "Ireland",
+                        "Isle of Man", "Italy", "Latvia", "Liechtenstein",
+                        "Lithuania", "Luxembourg", "Malta", "Moldova",
+                        "Monaco", "Montenegro", "Netherlands",
+                        "North Macedonia", "Norway", "Poland",
+                        "Portugal", "Romania", "Russian Federation",
+                        "San Marino", "Serbia","Slovakia","Slovenia","Spain",
+                        "Sweden","Switzerland","Ukraine","United Kingdom",
+                        "Vatican City")
+
+
+# Replace with the list of European countries
+fertility_rates_europe <- fertility_rates %>%
+  filter(`Country Name` %in% european_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_europe %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in European Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_europe.png", 
+       plot = p, 
+       width = 10, 
+       dpi = 1000)
+
+```
+
+
+### Figure 3
+```{r fig.align='center', fig.height = 8}
+# Filter the dataset to include only African countries
+african_countries <- c("Angola", "Benin", "Burkina Faso", "Burundi", "Cabo Verde",
+                       "Cameroon", "Central African Republic", "Chad", "Comoros",
+                       "Congo, Dem. Rep.", "Congo, Rep.", "Cote d'Ivoire",
+                       "Djibouti", "Egypt, Arab Rep.", "Equatorial Guinea",
+                       "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia, The",
+                       "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho",
+                       "Liberia", "Libya", "Madagascar", "Malawi", "Mali",
+                       "Mauritania", "Mauritius", "Morocco", "Mozambique",
+                       "Namibia", "Niger", "Nigeria", "Rwanda",
+                       "Sao Tome and Principe", "Senegal", 
+                       "Seychelles","Sierra Leone","Somalia","South Africa",
+                       "South Sudan","Sudan","Tanzania","Togo","Tunisia",
+                       "Uganda","Zambia","Zimbabwe")
+
+
+# Replace with the list of African countries
+fertility_rates_africa <- fertility_rates %>%
+  filter(`Country Name` %in% african_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_africa %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in African Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_africa.png",
+       plot = p,
+       width = 20,
+       dpi = 1000)
+
+```
+
+
+### Figure 4
+```{r fig.align='center', fig.height = 8}
+# Filter the dataset to include only Asian countries
+asian_countries <- c("Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh",
+                     "Bhutan", "Brunei Darussalam", "Cambodia", "China", "Georgia",
+                     "Hong Kong SAR, China", "India", "Indonesia", "Iran, Islamic Rep.",
+                     "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan",
+                     "Korea, Dem. People's Rep.", "Korea, Rep.", "Kuwait",
+                     "Kyrgyz Republic", "Lao PDR", "Lebanon",
+                     "Macao SAR, China", "Malaysia", "Maldives",
+                     "Mongolia", "Myanmar", "Nepal",
+                     "Oman", "Pakistan","Palestine","Philippines","Qatar",
+                     "Russian Federation","Saudi Arabia","Singapore","Sri Lanka",
+                     "Syrian Arab Republic","Taiwan, China","Tajikistan","Thailand",
+                     "Timor-Leste","Turkey","Turkmenistan","United Arab Emirates",
+                     "Uzbekistan","Vietnam","Yemen, Rep.")
+
+
+# Replace with the list of Asian countries
+fertility_rates_asia <- fertility_rates %>%
+  filter(`Country Name` %in% asian_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_asia %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in Asian Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_asia.png",
+       plot = p,
+       width = 10,
+       dpi = 1000)
+
+```
+
+
+### Figure 5
+```{r fig.align='center', fig.height = 8}
+
+# Filter the dataset to include only North American countries
+north_american_countries <- c("Antigua and Barbuda", "Bahamas, The", "Barbados",
+                              "Belize", "Canada", "Costa Rica", "Cuba", "Dominica",
+                              "Dominican Republic", "El Salvador", "Greenland",
+                              "Grenada", "Guatemala", "Haiti", "Honduras",
+                              "Jamaica", "Mexico", "Nicaragua", "Panama",
+                              "St. Kitts and Nevis", "St. Lucia",
+                              "St. Vincent and the Grenadines",
+                              "Trinidad and Tobago", "United States")
+
+
+# Replace with the list of North American countries
+fertility_rates_north_america <- fertility_rates %>%
+  filter(`Country Name` %in% north_american_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_north_america %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in North American Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_north_america.png",
+       plot = p,
+       width = 10,
+       dpi = 1000)
+
+```
+
+
+### Figure 6
+```{r fig.align='center', fig.height = 8}
+
+# Filter the dataset to include only South American countries
+south_american_countries <- c("Argentina", "Bolivia", "Brazil", "Chile",
+                              "Colombia", "Ecuador", "Guyana", "Paraguay",
+                              "Peru", "Suriname", "Uruguay", "Venezuela")
+
+
+# Replace with the list of South American countries
+fertility_rates_south_america <- fertility_rates %>%
+  filter(`Country Name` %in% south_american_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_south_america %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in South American Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_south_america.png",
+       plot = p,
+       width = 10,
+       dpi = 1000)
+
+
+```
+
+
+### Figure 7
+```{r fig.align='center', fig.height = 8}
+
+# Filter the dataset to include only Oceanic countries
+oceanic_countries <- c("Australia", "Fiji", "Kiribati", "Marshall Islands",
+                       "Micronesia, Fed. Sts.", "Nauru", "New Zealand", "Palau",
+                       "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga",
+                       "Tuvalu", "Vanuatu")
+
+
+# Replace with the list of Oceanic countries
+fertility_rates_oceania <- fertility_rates %>%
+  filter(`Country Name` %in% oceanic_countries)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_oceania %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels
+p <- ggplot(fertility_rates_long, 
+            aes(x = Year, 
+                y = Fertility_Rate, 
+                color = `Country Name`, 
+                group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate in Oceanic Countries (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  guides(color = guide_legend(ncol = 3))
+
+p 
+
+# Save the plot to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_oceania.png",
+       plot = p,
+       width = 10,
+       dpi = 1000)
+
+```
+
+
+#### Total Fertility Rate by Geographic Region (1960-2021)
+```{r fig.align='center', fig.height = 8}
+
+# Combine the data for all regions into one data frame
+fertility_rates_all_regions <- bind_rows(
+  fertility_rates_africa %>% mutate(Region = "Africa"),
+  fertility_rates_asia %>% mutate(Region = "Asia"),
+  fertility_rates_europe %>% mutate(Region = "Europe"),
+  fertility_rates_north_america %>% mutate(Region = "North America"),
+  fertility_rates_oceania %>% mutate(Region = "Oceania"),
+  fertility_rates_south_america %>% mutate(Region = "South America")
+)
+
+# Reshape the data from wide to long format
+fertility_rates_long <- fertility_rates_all_regions %>%
+  pivot_longer(cols = `1960`:`2021`,
+               names_to = "Year",
+               values_to = "Fertility_Rate")
+
+# Create the plot with custom x-axis labels and facets
+p1 <- ggplot(fertility_rates_long, 
+             aes(x = Year, 
+                 y = Fertility_Rate, 
+                 color = `Country Name`, 
+                 group = `Country Name`)) +
+  geom_line() +
+  xlab("Year") +
+  ylab("Fertility Rate") +
+  ggtitle("Total Fertility Rate by Region (1960-2021)") +
+  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none") +
+  facet_wrap(~ Region)
+
+p1
+
+# Save the plot with the graphs to a file with a resolution of 400 dpi
+ggsave("Documents/data_analytics/fertility_rate_case_study/figures/fertility_rates_all_regions_graphs.png",
+       plot = p1,
+       width = 10,
+       dpi = 1000)
+
+# Create a separate plot for the legend
+```
+
+## Step 6: Export data, create Tableau dashboard
+
+```{r }
+# Overall, it seems that many countries are experiencing a pronounced downward 
+# trend in terms of total fertility rate. To make this more clear, 
+# let's export fertility_rates_long.csv to Tableau to create an interactive 
+# dashboard. 
+
+write.csv(fertility_rates_long, 
+          "Documents/data_analytics/fertility_rate_case_study/fertility_rates_all_regions.csv",
+          row.names = FALSE)
+```
+
+## Step 7: Explore Tableau dashboard
+- Click [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard2) to see this project's Tableau dashboard.
+
+## Step 8: Identify pattern
+From the dashboard, it appears that nearly every country has experienced a sharp decrease in total fertility rates. Let's make sure our analysis is correct.
+## Step 9: Graph 
+
+```{r}
+# Replace spaces with underscores in column names
+colnames(fertility_rates_long) <- gsub(" ", "_", colnames(fertility_rates_long))
+
+# Add a pct_change column to the data frame
+fertility_data <- fertility_rates_long %>%
+  group_by(Country_Name) %>%
+  mutate(pct_change = (Fertility_Rate - lag(Fertility_Rate)) / lag(Fertility_Rate) * 100) %>%
+  ungroup()
+
+plots <- fertility_data %>%
+  group_by(Region, Country_Name) %>%
+  summarise(mean_pct_change = mean(pct_change, na.rm = TRUE)) %>%
+  ungroup() %>%
+  split(.$Region) %>%
+  map(~ .x[order(.x$mean_pct_change),] %>%
+    ggplot(aes(x = reorder(Country_Name, mean_pct_change), y = mean_pct_change)) +
+    geom_point(shape = 21, size = 3, aes(fill = ifelse(mean_pct_change > 0, "Above 0", "Below 0"))) +
+    scale_fill_manual(values = c("Above 0" = "green", "Below 0" = "red")) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "none") +
+    labs(x = "Country Name", y = "Percentage Change in Total Fertility Rate (%)", title = paste("Percentage Change in Total Fertility Rate by Country in", unique(.x$Region))))
+
+# Print the plots
+plots
+
+
+
+
+```
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+# Define the lists of countries by region
+european_countries <- c("Albania", "Andorra", "Austria", "Belarus", "Belgium", 
+                        "Bosnia and Herzegovina", "Bulgaria", "Channel Islands", 
+                        "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", 
+                        "Faroe Islands", "Finland", "France", "Germany", 
+                        "Gibraltar", "Greece", "Hungary", "Iceland", "Ireland",
+                        "Isle of Man", "Italy", "Latvia", "Liechtenstein",
+                        "Lithuania", "Luxembourg", "Malta", "Moldova",
+                        "Monaco", "Montenegro", "Netherlands",
+                        "North Macedonia", "Norway", "Poland",
+                        "Portugal", "Romania", "Russian Federation",
+                        "San Marino", "Serbia","Slovakia","Slovenia","Spain",
+                        "Sweden","Switzerland","Ukraine","United Kingdom",
+                        "Vatican City")
+
+african_countries <- c("Angola", "Benin", "Burkina Faso", "Burundi", "Cabo Verde",
+                       "Cameroon", "Central African Republic", "Chad", "Comoros",
+                       "Congo, Dem. Rep.", "Congo, Rep.", "Cote d'Ivoire",
+                       "Djibouti", "Egypt, Arab Rep.", "Equatorial Guinea",
+                       "Eritrea", "Eswatini", "Ethiopia", "Gabon", "Gambia, The",
+                       "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho",
+                       "Liberia", "Libya", "Madagascar", "Malawi", "Mali",
+                       "Mauritania", "Mauritius", "Morocco", "Mozambique",
+                       "Namibia", "Niger", "Nigeria", "Rwanda",
+                       "Sao Tome and Principe", "Senegal", 
+                       "Seychelles","Sierra Leone","Somalia","South Africa",
+                       "South Sudan","Sudan","Tanzania","Togo","Tunisia",
+                       "Uganda","Zambia","Zimbabwe")
+
+asian_countries <- c("Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh",
+                     "Bhutan", "Brunei Darussalam", "Cambodia", "China", "Georgia",
+                     "Hong Kong SAR, China", "India", "Indonesia", "Iran, Islamic Rep.",
+                     "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan",
+                     "Korea, Dem. People's Rep.", "Korea, Rep.", "Kuwait",
+                     "Kyrgyz Republic", "Lao PDR", "Lebanon",
+                     "Macao SAR, China", "Malaysia", "Maldives",
+                     "Mongolia", "Myanmar", "Nepal",
+                     "Oman", "Pakistan","Palestine","Philippines","Qatar",
+                     "Russian Federation","Saudi Arabia","Singapore","Sri Lanka",
+                     "Syrian Arab Republic","Taiwan, China","Tajikistan","Thailand",
+                     "Timor-Leste","Turkey","Turkmenistan","United Arab Emirates",
+                     "Uzbekistan","Vietnam","Yemen, Rep.")
+
+north_american_countries <- c("Antigua and Barbuda", "Bahamas, The", "Barbados",
+                              "Belize", "Canada", "Costa Rica", "Cuba", "Dominica",
+                              "Dominican Republic", "El Salvador", "Greenland",
+                              "Grenada", "Guatemala", "Haiti", "Honduras",
+                              "Jamaica", "Mexico", "Nicaragua", "Panama",
+                              "St. Kitts and Nevis", "St. Lucia",
+                              "St. Vincent and the Grenadines",
+                              "Trinidad and Tobago", "United States")
+
+south_american_countries <- c("Argentina", "Bolivia", "Brazil", "Chile",
+                              "Colombia", "Ecuador", "Guyana", "Paraguay",
+                              "Peru", "Suriname", "Uruguay", "Venezuela")
+
+oceanic_countries <- c("Australia", "Fiji", "Kiribati", "Marshall Islands",
+                       "Micronesia, Fed. Sts.", "Nauru", "New Zealand", "Palau",
+                       "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga",
+                       "Tuvalu", "Vanuatu")
+
+# Define a function to generate a plot for a given region
+generate_plot <- function(region, countries, data, country_col, file_path) {
+  # Filter the dataset to include only countries in the given region
+  fertility_rates_region <- data %>%
+    filter(!!sym(country_col) %in% countries)
+  
+  # Reshape the data from wide to long format
+  fertility_rates_long <- fertility_rates_region %>%
+    pivot_longer(cols = `1960`:`2021`,
+                 names_to = "Year",
+                 values_to = "Fertility_Rate")
+  
+  # Create the plot with custom x-axis labels
+  p <- ggplot(fertility_rates_long, 
+              aes(x = Year, 
+                  y = Fertility_Rate, 
+                  color = !!sym(country_col), 
+                  group = !!sym(country_col))) +
+    geom_line() +
+    xlab("Year") +
+    ylab("Total Fertility Rate") +
+    ggtitle(paste0("Total Fertility Rate in ", region, 
+                   " (1960-2021)")) +
+    scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "bottom") +
+    guides(color = guide_legend(ncol = 3))
+  
+  p 
+  
+  # Save the plot to a file with a resolution of 400 dpi
+  ggsave(paste0(file_path, "/fertility_rates_", 
+                tolower(region), ".png"), 
+         plot = p, 
+         width = 10, 
+         dpi = 1000)
+}
+
+# Generate a plot for each region
+generate_plot("Europe", european_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+generate_plot("Africa", african_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+generate_plot("Asia" , asian_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+generate_plot("North America" , north_american_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+generate_plot("South America" , south_american_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+generate_plot("Oceania" , oceanic_countries, fertility_rates, "Country Name",
+              "Documents/data_analytics/fertility_rate_case_study/new_figures")
+```
