@@ -1,5 +1,5 @@
 ---
-title: "Total Fertility Rate by Geographic Region (1960-2021)"
+title: "Overpopulation vs. Underpopulation: Insights from Total Fertility Rate Data (1960-2021)"
 author: "Bradley Cardona"
 date: "2023-06-28"
 output:
@@ -15,9 +15,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, fig.width = 14, fig.height =
 ```
 
 #### Case Study Outline:
-- Motivating Question: What was the Total Fertility Rate by Geographic Region from 1960 to 2021?
+- Motivating Question: Which issue will be more significant in the coming decades, overpopulation or underpopulation?
 - Hypothesis: In the coming decades, most countries will need to address an *underpopulation* problem -- not an overpopulation one.
-- Data set: [Fertility rate, total (births per woman)](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021)
+- Data set: For this case study, I used a [data set](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021) from The World Bank. It contains a list of countries, in addition to their respective total fertility rates from 1960 to 2021. 
 
 
 #### Abstract: 
@@ -364,4 +364,6 @@ plots <- fertility_data %>%
 # Print the plots
 plots
 ```
+
+#### Conclusion
 These figures show that that the average percentage change in total fertility rates is negative for nearly every country from 1960 to 2021. This supports our initial hypothesis that, in the coming decades, many countries will need to address an underpopulation problem -- not an overpopulation one.   
