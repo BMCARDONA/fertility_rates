@@ -365,5 +365,5 @@ plots <- fertility_data %>%
 plots
 ```
 
-#### Conclusion
+#### Conclusion:
 These figures show that that the average percentage change in total fertility rates is negative for nearly every country from 1960 to 2021. This supports our initial hypothesis that, in the coming decades, many countries will need to address an underpopulation problem -- not an overpopulation one.   
