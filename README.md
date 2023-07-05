@@ -8,9 +8,9 @@
 - `fertility_rates.Rmd`, if you'd like to interact with the code; or
 - `fertility_rates.pdf`, if you'd like to see the LaTeX output of `fertility_rates.Rmd`
 
-**Tableau Dashboard**: If you'd like to see an interactive version of the figures generated from my analysis, check see the corresponding Tableau dashboard. You can find it [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard2).
+**Tableau Dashboard**: If you'd like to see an interactive version of the figures generated from my analysis, see the corresponding Tableau dashboard. You can find it [here](https://public.tableau.com/app/profile/bradley.cardona/viz/AverageFertilityRatebyRegion1960-2021/Dashboard2).
 
-**Conclusion**: Most countries will need to address in the coming decades an *underpopulation* problem -- not an overpopulation one.
+**Conclusion**: In the coming decades, most countries will need to address an *underpopulation* problem -- not an overpopulation one.
 
 ## Guiding Questions
 Following are some of the guiding questions I used to complete this case study. These questions are broken up into six sections: 

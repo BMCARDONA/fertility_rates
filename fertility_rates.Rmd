@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, fig.width = 14, fig.height =
 
 #### Case Study Outline:
 - Motivating Question: What was the Total Fertility Rate by Geographic Region from 1960 to 2021?
-- Hypothesis: Most countries will need to address in the coming decades an underpopulation problem -- not an overpopulation one.
+- Hypothesis: In the coming decades, most countries will need to address an *underpopulation* problem -- not an overpopulation one.
 - Data set: [Fertility rate, total (births per woman)](https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?end=2021&start=2021&view=map&year=2021)
 
 
