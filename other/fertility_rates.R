@@ -355,7 +355,7 @@ p1 <- ggplot(fertility_rates_long,
   xlab("Year") +
   ylab("Fertility Rate") +
   ggtitle("Average Fertility Rate by Region (1960-2021)") +
-  scale_x_discrete(breaks = seq(1960, 2021, by = 5)) +
+  scale_x_discrete(breaks = seq(19 60, 2021, by = 5)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none") +
   facet_wrap(~ Region)
